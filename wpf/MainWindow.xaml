@@ -10,7 +10,7 @@
         <!-- VarClass Template-->
         <DataTemplate DataType="{x:Type localmodel:VarClass}">
             <Border BorderBrush="Orange" BorderThickness="2" Margin="2,2,2,2">
-                <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsChecked}">
+                <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsEnabled}">
                     <TextBlock Text="{Binding Name}"  TextAlignment="Right" />
                     <TextBlock Text=" : 0X" />
                     <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
@@ -21,7 +21,7 @@
         <!-- FLagClass Template-->
         <DataTemplate DataType="{x:Type localmodel:FlagClass}">
             <Border BorderBrush="Orange" BorderThickness="2">
-                <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsChecked}">
+                <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsEnabled}">
                     <TextBlock Text="{Binding Name}"  TextAlignment="Right" />
                     <TextBlock Text=" : "  />
                     <CheckBox IsChecked="{Binding Value, Mode=TwoWay, UpdateSourceTrigger =PropertyChanged}"  />

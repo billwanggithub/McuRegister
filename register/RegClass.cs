@@ -59,7 +59,13 @@ namespace Model
         }
         [ObservableProperty]
         public bool isEnabled = true;
-
+        partial void OnIsEnabledChanged(bool value)
+        {
+            foreach (var v in Items)
+            {
+                v.IsEnabled = IsEnabled;
+            }
+        }
         public void PropertyValueChanged(object obj, dynamic value)
         {
             GetValue();

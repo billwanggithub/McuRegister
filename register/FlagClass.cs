@@ -20,6 +20,8 @@ namespace Model
             if (DebugPrint != null)
                 DebugPrint($"{Name} = {value}\n");
         }
+        [ObservableProperty]
+        public bool isEnabled = true;
     }
 }
 
