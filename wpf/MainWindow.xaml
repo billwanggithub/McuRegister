@@ -14,7 +14,7 @@
                     <TextBlock Text="{Binding Name}"  TextAlignment="Right" />
                     <TextBlock Text=" : 0X" />
                     <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
-                                Converter={StaticResource NumberToHexString}}" />
+                                Converter={StaticResource NumberToHexString}, ConverterParameter=2}" />
                 </StackPanel>
             </Border>
         </DataTemplate>
@@ -41,7 +41,7 @@
                                 <StackPanel Orientation="Horizontal">
                                     <TextBox Text="0X "></TextBox>
                                     <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
-                                Converter={StaticResource NumberToHexString}}" />
+                                Converter={StaticResource NumberToHexString}, ConverterParameter=2}" />
                                 </StackPanel>
                             </StackPanel>
                             <ItemsControl ItemsSource="{Binding Items}"/>
@@ -63,7 +63,7 @@
                             <TextBlock Text="{Binding Name}"  TextAlignment="Right" />
                             <TextBlock Text=" : 0X" />
                             <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
-                                Converter={StaticResource NumberToHexString}}" />
+                                Converter={StaticResource NumberToHexString}, ConverterParameter=2}" />
                         </StackPanel>
                     </HierarchicalDataTemplate>
                 </TreeView.Resources>
