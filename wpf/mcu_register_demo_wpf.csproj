@@ -10,6 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Dictionaries\**" />
+    <EmbeddedResource Remove="Dictionaries\**" />
+    <None Remove="Dictionaries\**" />
+    <Page Remove="Dictionaries\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Include="..\register\Delegates.cs" Link="Model\Delegates.cs" />
     <Compile Include="..\register\FlagClass.cs" Link="Model\FlagClass.cs" />
     <Compile Include="..\register\RegClass.cs" Link="Model\RegClass.cs" />
@@ -19,6 +26,10 @@
   <ItemGroup>
     <PackageReference Include="Cogs.Collections" Version="1.12.1" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\CSharpHelper\Converters\Converters.csproj" />
   </ItemGroup>
 
 </Project>

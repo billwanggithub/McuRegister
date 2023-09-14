@@ -1,0 +1,7 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:converters="clr-namespace:Converters;assembly=Converters"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <converters:NumberToHexString x:Key="NumberToHexString"/>
+    <converters:ItemToVisibilityConverter x:Key="ItemToVisibilityConverter"/>
+    <converters:ItemToBoolConverter x:Key="ItemToBoolConverter"/>
+</ResourceDictionary>

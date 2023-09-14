@@ -3,8 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="Model"
-        xmlns:localmodel="clr-namespace:Model"
+        xmlns:localmodel="clr-namespace:Model"      
         mc:Ignorable="d"
         Title="MainWindow" SizeToContent="WidthAndHeight">
     <Window.Resources>
@@ -12,9 +11,10 @@
         <DataTemplate DataType="{x:Type localmodel:VarClass}">
             <Border BorderBrush="Orange" BorderThickness="2" Margin="2,2,2,2">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding Name}" Width="40" TextAlignment="Right" />
-                    <TextBlock Text=" : 0X" Width="40"/>
-                    <TextBox Text="{Binding Value , Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=X2}" Width="40"/>
+                    <TextBlock Text="{Binding Name}"  TextAlignment="Right" />
+                    <TextBlock Text=" : 0X" />
+                    <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
+                                Converter={StaticResource NumberToHexString}}" />
                 </StackPanel>
             </Border>
         </DataTemplate>
@@ -22,9 +22,9 @@
         <DataTemplate DataType="{x:Type localmodel:FlagClass}">
             <Border BorderBrush="Orange" BorderThickness="2">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding Name}" Width="40" TextAlignment="Right" />
-                    <TextBlock Text=" : " Width="40" />
-                    <CheckBox IsChecked="{Binding Value, Mode=TwoWay, UpdateSourceTrigger =PropertyChanged}" Width="40" />
+                    <TextBlock Text="{Binding Name}"  TextAlignment="Right" />
+                    <TextBlock Text=" : "  />
+                    <CheckBox IsChecked="{Binding Value, Mode=TwoWay, UpdateSourceTrigger =PropertyChanged}"  />
                 </StackPanel>
             </Border>
         </DataTemplate>
@@ -40,7 +40,8 @@
                                 <TextBlock Text="{Binding Name}" Margin="2,2,2,2"/>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBox Text="0X "></TextBox>
-                                    <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=X2}"></TextBox>
+                                    <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
+                                Converter={StaticResource NumberToHexString}}" />
                                 </StackPanel>
                             </StackPanel>
                             <ItemsControl ItemsSource="{Binding Items}"/>
@@ -56,11 +57,13 @@
         <GroupBox Header="Tree View">
             <TreeView ItemsSource="{Binding RegList}">
                 <TreeView.Resources>
+                    <!--Register Template -->
                     <HierarchicalDataTemplate DataType="{x:Type localmodel:RegClass}" ItemsSource="{Binding Items}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Name}" Width="40" TextAlignment="Right" />
-                            <TextBlock Text=" : 0X" Width="40"/>
-                            <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus, StringFormat=X2}" Width="40"/>
+                            <TextBlock Text="{Binding Name}"  TextAlignment="Right" />
+                            <TextBlock Text=" : 0X" />
+                            <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
+                                Converter={StaticResource NumberToHexString}}" />
                         </StackPanel>
                     </HierarchicalDataTemplate>
                 </TreeView.Resources>
@@ -69,7 +72,7 @@
         <Button Command="{Binding DumpRegsCommand}">Dump</Button>
         <Border BorderBrush="blue" BorderThickness="2" Height="200" MinWidth="400">
             <ScrollViewer>
-                <TextBlock Text="{Binding ConsoleText}"></TextBlock>
+                <TextBox Text="{Binding ConsoleText}"></TextBox>
             </ScrollViewer>
         </Border>
     </StackPanel>
