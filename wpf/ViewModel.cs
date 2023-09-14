@@ -54,6 +54,12 @@ public partial class ViewModel : ObservableObject
                 new FlagClass() {Name= "f", Pos = 7, Value = false},
             },
         });
+
+        RegList.Add(new()
+        {
+            Value = 0xAA,
+            Name = "Reg2"
+        });
     }
 
     [RelayCommand]
