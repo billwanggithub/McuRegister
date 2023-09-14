@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Model;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 public partial class ViewModel : ObservableObject
 {
@@ -67,21 +68,44 @@ public partial class ViewModel : ObservableObject
     {
         foreach (var reg in RegList)
         {
-            string varString = "";
-            string flagString = "";
-            foreach (var item in reg.Items)
-            {
-                if (item.GetType() == typeof(VarClass))
-                {
-                    varString += $"{item.Name}:0X{item.Value:X2}\n";
-                }
-                if (item.GetType() == typeof(FlagClass))
-                {
-                    flagString += $"{item.Name}:{item.Value}\n";
-                }
-            }
-            ConsoleText += $"{reg.Name}:0X{reg.Value:X2}\n{varString}{flagString}\n";
+            string? regString = DumpRegister(reg);
+            ConsoleText += regString ?? "";
         }
+    }
+
+    string? DumpRegister(RegClass reg)
+    {
+        if (reg.Items is null)
+            return null;
+        string regString = "";
+        string varString = "";
+        string flagString = "";
+        foreach (var item in reg.Items)
+        {
+            if (item.GetType() == typeof(VarClass))
+            {
+                varString += $"{item.Name}:0X{item.Value:X2}\n";
+            }
+            if (item.GetType() == typeof(FlagClass))
+            {
+                flagString += $"{item.Name}:{item.Value}\n";
+            }
+        }
+        regString = $"{reg.Name}:0X{reg.Value:X2}\n{varString}{flagString}\n";
+        return regString;
+    }
+
+    [RelayCommand]
+    void ReadRegisterRelay(object? parameter)
+    {
+        if (parameter == null)
+            return;
+        RegClass? reg = ReadRegister((string)parameter);
+        ConsoleText += DumpRegister(reg!);
+    }
+    public RegClass? ReadRegister(string name)
+    {
+        return RegList.Where(x => x.Name == name).Select(x => x).FirstOrDefault();
     }
 
     void DebugPrint(string message)
