@@ -64,7 +64,7 @@ public partial class ViewModel : ObservableObject
     }
 
     [RelayCommand]
-    void DumpRegs()
+    void DumpRegs(object? parameter)
     {
         foreach (var reg in RegList)
         {
@@ -72,12 +72,25 @@ public partial class ViewModel : ObservableObject
             ConsoleText += regString ?? "";
         }
     }
+    [RelayCommand]
+    void ReadRegister(object? parameter)
+    {
+        if (parameter == null)
+            return;
+        RegClass? reg = GetReg((string)parameter);
+        string? regString = DumpRegister(reg!);
+        ConsoleText += regString;
+    }
 
     string? DumpRegister(RegClass reg)
     {
-        if (reg.Items is null)
-            return null;
         string regString = "";
+        if (reg == null) return null;
+        regString += $"{reg.Name}:0X{reg.Value:X2}\n";
+
+        if (reg.Items is null)
+            return regString + "\n";
+
         string varString = "";
         string flagString = "";
         foreach (var item in reg.Items)
@@ -91,19 +104,12 @@ public partial class ViewModel : ObservableObject
                 flagString += $"{item.Name}:{item.Value}\n";
             }
         }
-        regString = $"{reg.Name}:0X{reg.Value:X2}\n{varString}{flagString}\n";
+        regString += $"{varString}{flagString}\n";
         return regString;
     }
 
-    [RelayCommand]
-    void ReadRegisterRelay(object? parameter)
-    {
-        if (parameter == null)
-            return;
-        RegClass? reg = ReadRegister((string)parameter);
-        ConsoleText += DumpRegister(reg!);
-    }
-    public RegClass? ReadRegister(string name)
+
+    public RegClass? GetReg(string name)
     {
         return RegList.Where(x => x.Name == name).Select(x => x).FirstOrDefault();
     }
