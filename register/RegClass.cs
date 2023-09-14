@@ -32,10 +32,8 @@ namespace Model
 
             GetValue();
         }
-
         [ObservableProperty]
         public string name = "";
-
         [ObservableProperty]
         public uint value = 0;
         partial void OnValueChanged(uint value)
@@ -59,6 +57,8 @@ namespace Model
             if (DebugPrint != null)
                 DebugPrint($"{Name} = 0X{value:X2}\n");
         }
+        [ObservableProperty]
+        public bool isEnabled = true;
 
         public void PropertyValueChanged(object obj, dynamic value)
         {

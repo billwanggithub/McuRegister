@@ -10,7 +10,7 @@
         <!-- VarClass Template-->
         <DataTemplate DataType="{x:Type localmodel:VarClass}">
             <Border BorderBrush="Orange" BorderThickness="2" Margin="2,2,2,2">
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsChecked}">
                     <TextBlock Text="{Binding Name}"  TextAlignment="Right" />
                     <TextBlock Text=" : 0X" />
                     <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
@@ -21,7 +21,7 @@
         <!-- FLagClass Template-->
         <DataTemplate DataType="{x:Type localmodel:FlagClass}">
             <Border BorderBrush="Orange" BorderThickness="2">
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsChecked}">
                     <TextBlock Text="{Binding Name}"  TextAlignment="Right" />
                     <TextBlock Text=" : "  />
                     <CheckBox IsChecked="{Binding Value, Mode=TwoWay, UpdateSourceTrigger =PropertyChanged}"  />
@@ -36,10 +36,19 @@
                 <DataTemplate>
                     <Border BorderBrush="Blue" BorderThickness="2">
                         <StackPanel Orientation="Horizontal" Margin="2,2,2,2">
-                            <StackPanel>
-                                <TextBlock Text="{Binding Name}" Margin="2,2,2,2"/>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBox Text="0X "></TextBox>
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox x:Name="ItemControlCheckBox" IsChecked="{Binding IsEnabled}"/>
+                                <StackPanel IsEnabled="{Binding IsChecked, ElementName=ItemControlCheckBox}" Orientation="Horizontal">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Name}"  TextAlignment="Right" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Command="{Binding  DataContext.ReadRegisterCommand, ElementName=TreeviewContainer}" 
+                                    CommandParameter="{Binding Name}" Content="R" Height="20"/>
+                                            <Button Command="{Binding  DataContext.WriteRegisterCommand, ElementName=TreeviewContainer}" 
+                                    CommandParameter="{Binding Name}" Content="W" Height="20"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <TextBlock Text=" : 0X" />
                                     <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
                                 Converter={StaticResource NumberToHexString}, ConverterParameter=2}" />
                                 </StackPanel>
@@ -60,13 +69,17 @@
                     <!--Register Template -->
                     <HierarchicalDataTemplate DataType="{x:Type localmodel:RegClass}" ItemsSource="{Binding Items}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Name}"  TextAlignment="Right" />
-                            <TextBlock Text=" : 0X" />
-                            <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
+                            <CheckBox x:Name="TreeViewCheckBox" IsChecked="{Binding IsEnabled}"/>
+                            <StackPanel IsEnabled="{Binding IsChecked, ElementName=TreeViewCheckBox}" Orientation="Horizontal">
+                                <Button Command="{Binding  DataContext.ReadRegisterCommand, ElementName=TreeviewContainer}" 
+                                    CommandParameter="{Binding Name}" Content="R" />
+                                <Button Command="{Binding  DataContext.WriteRegisterCommand, ElementName=TreeviewContainer}" 
+                                    CommandParameter="{Binding Name}" Content="W"/>
+                                <TextBlock Text="{Binding Name}"  TextAlignment="Right" />
+                                <TextBlock Text=" : 0X" />
+                                <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
                                 Converter={StaticResource NumberToHexString}, ConverterParameter=2}" />
-                            <Button Command="{Binding  DataContext.ReadRegisterCommand, ElementName=TreeviewContainer}" CommandParameter="{Binding Name}" 
-                                    Content="Read">
-                            </Button>
+                            </StackPanel>
                         </StackPanel>
                     </HierarchicalDataTemplate>
                 </TreeView.Resources>

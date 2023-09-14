@@ -81,7 +81,6 @@ public partial class ViewModel : ObservableObject
         string? regString = DumpRegister(reg!);
         ConsoleText += regString;
     }
-
     string? DumpRegister(RegClass reg)
     {
         string regString = "";
