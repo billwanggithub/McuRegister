@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <AssemblyVersion>1.0.8657.1543</AssemblyVersion>
+    <FileVersion>1.0.8657.1543</FileVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\register\Delegates.cs" Link="Model\Delegates.cs" />
+    <Compile Include="..\register\FlagClass.cs" Link="Model\FlagClass.cs" />
+    <Compile Include="..\register\RegClass.cs" Link="Model\RegClass.cs" />
+    <Compile Include="..\register\VarClass.cs" Link="Model\VarClass.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Cogs.Collections" Version="1.12.1" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+  </ItemGroup>
+
+</Project>
