@@ -121,6 +121,16 @@ public partial class ViewModel : ObservableObject
             Mask = 0xFF,
             Value = 0x20,
         });
+        for (int i = 0; i < 100; i++)
+        {
+            RegList.Add(new()
+            {
+                Address = (uint)i + 6,
+                Name = $"Reg{i}",
+                Mask = 0xFF,
+                Value = 0x20,
+            });
+        }
     }
     [RelayCommand]
     void DumpRegs(object? parameter)

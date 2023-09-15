@@ -34,45 +34,47 @@
     </Window.Resources>
 
     <StackPanel>
-        <GroupBox Header="G2198" >
+        <GroupBox Header="G2198" MaxHeight="400">
             <!-- https://www.codemag.com/article/1401031/Using-the-WPF-Tree-View-with-Multiple-Levels -->
             <!--- https://wpf-tutorial.com/treeview-control/treeview-data-binding-multiple-templates/ -->
             <!-- https://wpf-tutorial.com/be/85/the-treeview-control/treeview-data-binding-and-multiple-templates/ -->
-            <TreeView ItemsSource="{Binding RegList}" x:Name="TreeviewContainer">
-                <TreeView.Resources>
-                    <!--Register Template -->
-                    <HierarchicalDataTemplate DataType="{x:Type localmodel:RegClass}" ItemsSource="{Binding SubFields}">
-                        <DockPanel>
-                            <CheckBox DockPanel.Dock="Left" x:Name="TreeViewCheckBox" IsChecked="{Binding IsEnabled}"/>
-                            <DockPanel DockPanel.Dock="Left" IsEnabled="{Binding IsChecked, ElementName=TreeViewCheckBox}" >
-                                <!-- R/W Button-->
-                                <UniformGrid DockPanel.Dock="Left" Columns="2">
-                                    <Button Command="{Binding  DataContext.ReadRegisterCommand, ElementName=TreeviewContainer}" 
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Background="CadetBlue">
+                <TreeView ItemsSource="{Binding RegList}" x:Name="TreeviewContainer">
+                    <TreeView.Resources>
+                        <!--Register Template -->
+                        <HierarchicalDataTemplate DataType="{x:Type localmodel:RegClass}" ItemsSource="{Binding SubFields}">
+                            <DockPanel>
+                                <CheckBox DockPanel.Dock="Left" x:Name="TreeViewCheckBox" IsChecked="{Binding IsEnabled}"/>
+                                <DockPanel DockPanel.Dock="Left" IsEnabled="{Binding IsChecked, ElementName=TreeViewCheckBox}" >
+                                    <!-- R/W Button-->
+                                    <UniformGrid DockPanel.Dock="Left" Columns="2">
+                                        <Button Command="{Binding  DataContext.ReadRegisterCommand, ElementName=TreeviewContainer}" 
                                     CommandParameter="{Binding Name}" Content="R" Foreground="BlueViolet"/>
-                                    <Button Command="{Binding  DataContext.WriteRegisterCommand, ElementName=TreeviewContainer}" 
+                                        <Button Command="{Binding  DataContext.WriteRegisterCommand, ElementName=TreeviewContainer}" 
                                     CommandParameter="{Binding Name}" Content="W" Foreground="Red"/>
-                                </UniformGrid>
-                                <!-- Address/Name -->
-                                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-                                    <TextBlock Text="[" Background="LightBlue"/>
-                                    <TextBlock Text="{Binding Address, Converter={StaticResource NumberToHexString}, ConverterParameter=2}"  TextAlignment="Right"  Background="LightBlue"/>
-                                    <TextBlock Text="]" Background="LightBlue"/>
-                                    <TextBlock Text="{Binding Name}"  Padding="2,2,2,2" Background="Blue" Foreground="White" Width="100"/>
-                                </StackPanel>
-                                <!-- Value -->
-                                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-                                    <TextBlock DockPanel.Dock="Left" Text=" : 0X" />
-                                    <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
+                                    </UniformGrid>
+                                    <!-- Address/Name -->
+                                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                                        <TextBlock Text="[" Background="LightBlue"/>
+                                        <TextBlock Text="{Binding Address, Converter={StaticResource NumberToHexString}, ConverterParameter=2}"  TextAlignment="Right"  Background="LightBlue"/>
+                                        <TextBlock Text="]" Background="LightBlue"/>
+                                        <TextBlock Text="{Binding Name}"  Padding="2,2,2,2" Background="Blue" Foreground="White" Width="100"/>
+                                    </StackPanel>
+                                    <!-- Value -->
+                                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                                        <TextBlock DockPanel.Dock="Left" Text=" : 0X" />
+                                        <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
                                 Converter={StaticResource NumberToHexString}, ConverterParameter=2}" Background="Yellow" Foreground="Blue"/>
-                                    <TextBox Text="{Binding Value, StringFormat=D3 }" Background="White" Foreground="Blue"></TextBox>
-                                </StackPanel>
+                                        <TextBox Text="{Binding Value, StringFormat=D3 }" Background="White" Foreground="Blue"></TextBox>
+                                    </StackPanel>
+                                </DockPanel>
+                                <!-- Slider Bar -->
+                                <Slider DockPanel.Dock="Right" Value="{Binding Value}" Maximum="{Binding Mask}" Width="100"></Slider>
                             </DockPanel>
-                            <!-- Slider Bar -->
-                            <Slider DockPanel.Dock="Right" Value="{Binding Value}" Maximum="{Binding Mask}" Width="100"></Slider>
-                        </DockPanel>
-                    </HierarchicalDataTemplate>
-                </TreeView.Resources>
-            </TreeView>
+                        </HierarchicalDataTemplate>
+                    </TreeView.Resources>
+                </TreeView>
+            </ScrollViewer>
         </GroupBox>
         <UniformGrid>
             <Button Command="{Binding DumpRegsCommand}"  Margin="2,2,2,2">Read Regs</Button>
