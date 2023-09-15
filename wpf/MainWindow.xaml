@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:localmodel="clr-namespace:Model"      
         mc:Ignorable="d"
-        Title="MainWindow" SizeToContent="WidthAndHeight">
+        Title="MainWindow" SizeToContent="Width" Height="600">
     <Window.Resources>
         <!-- VarClass Template-->
         <DataTemplate DataType="{x:Type localmodel:VarClass}">
@@ -90,7 +90,7 @@
             <Button Command="{Binding WriteJsonCommand}"  Margin="2,2,2,2">Write Json</Button>
             <Button Command="{Binding AddRegCommand}"  Margin="2,2,2,2">Add Reg</Button>
         </UniformGrid>
-        <Border BorderBrush="blue" BorderThickness="2" MinWidth="400">
+        <Border BorderBrush="blue" BorderThickness="2">
             <ScrollViewer x:Name="Console">
                 <TextBox  Text="{Binding ConsoleText}" TextChanged="Console_TextChanged"></TextBox>
             </ScrollViewer>

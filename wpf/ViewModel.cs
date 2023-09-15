@@ -121,7 +121,7 @@ public partial class ViewModel : ObservableObject
             Mask = 0xFF,
             Value = 0x20,
         });
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 10; i++)
         {
             RegList.Add(new()
             {

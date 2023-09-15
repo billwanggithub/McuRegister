@@ -1,0 +1,83 @@
+﻿<UserControl x:Class="mcu_register_demo_wpf.McuRegUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:mcu_register_demo_wpf"
+                     xmlns:localmodel="clr-namespace:Model"   
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <!-- VarClass Template-->
+        <DataTemplate DataType="{x:Type localmodel:VarClass}">
+            <Border BorderBrush="Orange" BorderThickness="2" Margin="2,2,2,2">
+                <StackPanel IsEnabled="{Binding IsEnabled}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="B[" Background="LightBlue" FontFamily="Consolas" />
+                        <TextBlock Text="{Binding Pos, StringFormat=D2}" Background="LightBlue" FontFamily="Consolas"/>
+                        <TextBlock Text="]" Background="LightBlue" FontFamily="Consolas" />
+                        <TextBlock Text="{Binding Name}"  Padding="2,2,2,2" Background="Magenta" Foreground="White" Width="100" />
+                        <TextBlock Text=" 0X" />
+                        <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
+                                Converter={StaticResource NumberToHexString}, ConverterParameter=2}" Background="Yellow" Foreground="Blue"/>
+                    </StackPanel>
+                    <Slider Value="{Binding Value}" Maximum="{Binding Mask}" Foreground="CadetBlue"></Slider>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+        <!-- FLagClass Template-->
+        <DataTemplate DataType="{x:Type localmodel:FlagClass}">
+            <Border BorderBrush="Orange" BorderThickness="2">
+                <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsEnabled}">
+                    <TextBlock Text="B[" Background="LightBlue" FontFamily="Consolas" />
+                    <TextBlock Text="{Binding Pos, StringFormat=D2}" Background="LightBlue" FontFamily="Consolas"/>
+                    <TextBlock Text="]" Background="LightBlue" FontFamily="Consolas" />
+                    <TextBlock Text="{Binding Name}"   Padding="2,2,2,2" Background="DarkMagenta" Foreground="white" Width="100" />
+                    <TextBlock Text=" "  />
+                    <CheckBox IsChecked="{Binding Value, Mode=TwoWay, UpdateSourceTrigger =PropertyChanged}"  Background="Yellow" Foreground="Blue"/>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+    </UserControl.Resources>
+    <!-- https://www.codemag.com/article/1401031/Using-the-WPF-Tree-View-with-Multiple-Levels -->
+    <!--- https://wpf-tutorial.com/treeview-control/treeview-data-binding-multiple-templates/ -->
+    <!-- https://wpf-tutorial.com/be/85/the-treeview-control/treeview-data-binding-and-multiple-templates/ -->
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Background="CadetBlue">
+        <TreeView ItemsSource="{Binding RegList}" x:Name="TreeviewContainer">
+            <TreeView.Resources>
+                <!--Register Template -->
+                <HierarchicalDataTemplate DataType="{x:Type localmodel:RegClass}" ItemsSource="{Binding SubFields}">
+                    <DockPanel>
+                        <CheckBox DockPanel.Dock="Left" x:Name="TreeViewCheckBox" IsChecked="{Binding IsEnabled}"/>
+                        <DockPanel DockPanel.Dock="Left" IsEnabled="{Binding IsChecked, ElementName=TreeViewCheckBox}" >
+                            <!-- R/W Button-->
+                            <UniformGrid DockPanel.Dock="Left" Columns="2">
+                                <Button Command="{Binding  DataContext.ReadRegisterCommand, ElementName=TreeviewContainer}" 
+                                    CommandParameter="{Binding Name}" Content="R" Foreground="BlueViolet"/>
+                                <Button Command="{Binding  DataContext.WriteRegisterCommand, ElementName=TreeviewContainer}" 
+                                    CommandParameter="{Binding Name}" Content="W" Foreground="Red"/>
+                            </UniformGrid>
+                            <!-- Address/Name -->
+                            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                                <TextBlock Text="[" Background="LightBlue" FontFamily="Consolas" />
+                                <TextBlock Text="{Binding Address, Converter={StaticResource NumberToHexString}, ConverterParameter=2}"  
+                                                   FontFamily="Consolas" TextAlignment="Right"  Background="LightBlue"/>
+                                <TextBlock Text="]" Background="LightBlue" FontFamily="Consolas" />
+                                <TextBlock Text="{Binding Name}"  Padding="2,2,2,2" Background="Blue" Foreground="White" Width="100" FontFamily="Consolas" />
+                            </StackPanel>
+                            <!-- Value -->
+                            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                                <TextBlock DockPanel.Dock="Left" Text=" : 0X" />
+                                <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
+                                Converter={StaticResource NumberToHexString}, ConverterParameter=2}" Background="Yellow" Foreground="Blue"/>
+                                <TextBox Text="{Binding Value, StringFormat=D3 }" Background="White" Foreground="Blue"></TextBox>
+                            </StackPanel>
+                            <!-- Slider Bar -->
+                            <Slider DockPanel.Dock="Right" Value="{Binding Value}" Maximum="{Binding Mask}" Width="100" Foreground="Maroon" ></Slider>
+                        </DockPanel>
+                    </DockPanel>
+                </HierarchicalDataTemplate>
+            </TreeView.Resources>
+        </TreeView>
+    </ScrollViewer>
+</UserControl>
