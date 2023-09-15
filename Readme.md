@@ -4,7 +4,7 @@
 
 ## Usage
 
-- Add Project Reference to Converters
+- Add Converters to Project Reference
 - Add Register Database
 
 ```
@@ -31,5 +31,17 @@ RegList.Add(new()
 
 - Add the following to Xaml
 ```
+<Window ...
+        ...
+        xmlns:uc="clr-namespace:UserControls"      
+        ...>
+<Grid>
+...
+...
 <uc:McuRegUserControl></uc:McuRegUserControl>
+...
+...
+</Grid>
+
+</Window>
 ``` 
