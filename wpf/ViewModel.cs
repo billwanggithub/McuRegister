@@ -23,7 +23,7 @@ public partial class ViewModel : ObservableObject
         {
             //DebugPrint = DebugPrint,
             Name = "reg0",
-            Items = new()
+            Fields = new()
             {
                 new FlagClass(){Name= "a", Pos = 0} ,
                 new VarClass() {Name= "var0", Mask = 0x03, Pos = 1, Value = 0} ,
@@ -32,7 +32,7 @@ public partial class ViewModel : ObservableObject
                 new FlagClass() {Name= "c", Pos = 7},
             },
             Value = 0xFF
-            //Items = new()
+            //Fields = new()
             //{
             //    new FlagClass(){Name= "a", Pos = 0, Value = true} ,
             //    new VarClass() {Name= "var0", Mask = 0x03, Pos = 1, Value = 0xFF} ,
@@ -46,7 +46,7 @@ public partial class ViewModel : ObservableObject
         {
             DebugPrint = DebugPrint,
             Name = "reg1",
-            Items = new()
+            Fields = new()
             {
                 new VarClass() {Name= "var2", Mask = 0x03, Pos = 1, Value = 0x00 } ,
                 new VarClass() {Name= "var3", Mask = 0x07, Pos = 4, Value = 0x00 },
@@ -63,6 +63,14 @@ public partial class ViewModel : ObservableObject
         });
     }
 
+    void Init_G2198()
+    {
+        RegList.Add(new()
+        {
+            Name = "TMST_VALUE",
+            Value = 0xAA,
+        });
+    }
     [RelayCommand]
     void DumpRegs(object? parameter)
     {
@@ -87,12 +95,12 @@ public partial class ViewModel : ObservableObject
         if (reg == null) return null;
         regString += $"{reg.Name}:0X{reg.Value:X2}\n";
 
-        if (reg.Items is null)
+        if (reg.Fields is null)
             return regString + "\n";
 
         string varString = "";
         string flagString = "";
-        foreach (var item in reg.Items)
+        foreach (var item in reg.Fields)
         {
             if (item.GetType() == typeof(VarClass))
             {

@@ -6,11 +6,15 @@ namespace Model
 {
     public partial class RegClass : ObservableObject
     {
-        public DebugPrintDelegate? DebugPrint = null; // defined in ViewModel
-
         [ObservableProperty]
-        public ObservableCollection<dynamic>? items;
-        partial void OnItemsChanged(ObservableCollection<dynamic>? value)
+        public uint address = 0;
+        [ObservableProperty]
+        public string name = "";
+        [ObservableProperty]
+        public uint value = 0;
+        [ObservableProperty]
+        public ObservableCollection<dynamic>? fields;
+        partial void OnFieldsChanged(ObservableCollection<dynamic>? value)
         {
             if (value is null)
                 return;
@@ -32,16 +36,12 @@ namespace Model
 
             GetValue();
         }
-        [ObservableProperty]
-        public string name = "";
-        [ObservableProperty]
-        public uint value = 0;
         partial void OnValueChanged(uint value)
         {
-            if (Items is null)
+            if (Fields is null)
                 return;
 
-            foreach (var v in Items)
+            foreach (var v in Fields)
             {
                 Type type = v.GetType();
                 if (type == typeof(VarClass))
@@ -61,7 +61,7 @@ namespace Model
         public bool isEnabled = true;
         partial void OnIsEnabledChanged(bool value)
         {
-            foreach (var v in Items)
+            foreach (var v in Fields)
             {
                 v.IsEnabled = IsEnabled;
             }
@@ -72,15 +72,17 @@ namespace Model
             //if (DebugPrint is not null)
             //    DebugPrint($"{Name} = {Value}\n");
         }
+
+        public DebugPrintDelegate? DebugPrint = null; // defined in ViewModel
         public uint GetValue()
         {
-            if (Items is null)
+            if (Fields is null)
                 return 0;
 
 
             uint varTemp = 0;
             uint flagTemp = 0;
-            foreach (var v in Items)
+            foreach (var v in Fields)
             {
                 if (v.GetType() == typeof(VarClass))
                 {
@@ -99,7 +101,7 @@ namespace Model
         //    {
         //        uint varTemp = 0;
         //        uint flagTemp = 0;
-        //        foreach (var v in Items)
+        //        foreach (var v in Fields)
         //        {
         //            if (v.GetType() == typeof(VarClass))
         //            {
@@ -116,7 +118,7 @@ namespace Model
         //    set
         //    {
         //        _value = value;
-        //        foreach (var v in Items)
+        //        foreach (var v in Fields)
         //        {
         //            Type type = v.GetType();
         //            if (type == typeof(VarClass))
