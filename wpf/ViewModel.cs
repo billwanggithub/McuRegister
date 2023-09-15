@@ -14,7 +14,8 @@ public partial class ViewModel : ObservableObject
 
     public ViewModel()
     {
-        Init_Registers();
+        //Init_Registers();
+        Init_G2198();
     }
 
     void Init_Registers()
@@ -67,8 +68,30 @@ public partial class ViewModel : ObservableObject
     {
         RegList.Add(new()
         {
+            Address = 0,
             Name = "TMST_VALUE",
-            Value = 0xAA,
+            Value = 0x00,
+        });
+        RegList.Add(new()
+        {
+            Address = 1,
+            Name = "VPOS1_Control",
+            Fields = new()
+            {
+                new VarClass() {Name= "VPOS1[9:8]", Mask = 0x03, Pos = 0} ,
+                new FlagClass(){Name= "FREQ_VP1", Pos = 2} ,
+                new FlagClass(){Name= "MODE_VP1", Pos = 3} ,
+                new VarClass() {Name= "FIXED[1:0]", Mask = 0x03, Pos = 4} ,
+                new FlagClass(){Name= "TRACK1", Pos = 6} ,
+                new FlagClass(){Name= "DIS", Pos = 7} ,
+            },
+            Value = 0x07,
+        });
+        RegList.Add(new()
+        {
+            Address = 2,
+            Name = "VPOS1[7:0]",
+            Value = 0x20,
         });
     }
     [RelayCommand]
@@ -93,7 +116,7 @@ public partial class ViewModel : ObservableObject
     {
         string regString = "";
         if (reg == null) return null;
-        regString += $"{reg.Name}:0X{reg.Value:X2}\n";
+        regString += $"[{reg.Address:X2}]{reg.Name} : 0X{reg.Value:X2}\n";
 
         if (reg.Fields is null)
             return regString + "\n";
@@ -104,11 +127,11 @@ public partial class ViewModel : ObservableObject
         {
             if (item.GetType() == typeof(VarClass))
             {
-                varString += $"{item.Name}:0X{item.Value:X2}\n";
+                varString += $"{item.Name} : 0X{item.Value:X2}\n";
             }
             if (item.GetType() == typeof(FlagClass))
             {
-                flagString += $"{item.Name}:{item.Value}\n";
+                flagString += $"{item.Name} : {item.Value}\n";
             }
         }
         regString += $"{varString}{flagString}\n";

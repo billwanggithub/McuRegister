@@ -11,10 +11,10 @@
         <DataTemplate DataType="{x:Type localmodel:VarClass}">
             <Border BorderBrush="Orange" BorderThickness="2" Margin="2,2,2,2">
                 <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsEnabled}">
-                    <TextBlock Text="{Binding Name}"  TextAlignment="Right" />
-                    <TextBlock Text=" : 0X" />
+                    <TextBlock Text="{Binding Name}"  Padding="2,2,2,2" Background="LightCyan" Width="100" />
+                    <TextBlock Text=" 0X" />
                     <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
-                                Converter={StaticResource NumberToHexString}, ConverterParameter=2}" />
+                                Converter={StaticResource NumberToHexString}, ConverterParameter=2}" Background="Yellow" Foreground="Blue"/>
                 </StackPanel>
             </Border>
         </DataTemplate>
@@ -22,73 +22,60 @@
         <DataTemplate DataType="{x:Type localmodel:FlagClass}">
             <Border BorderBrush="Orange" BorderThickness="2">
                 <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsEnabled}">
-                    <TextBlock Text="{Binding Name}"  TextAlignment="Right" />
-                    <TextBlock Text=" : "  />
-                    <CheckBox IsChecked="{Binding Value, Mode=TwoWay, UpdateSourceTrigger =PropertyChanged}"  />
+                    <TextBlock Text="{Binding Name}"   Padding="2,2,2,2" Background="LightCyan" Width="100" />
+                    <TextBlock Text=" "  />
+                    <CheckBox IsChecked="{Binding Value, Mode=TwoWay, UpdateSourceTrigger =PropertyChanged}"  Background="Yellow" Foreground="Blue"/>
                 </StackPanel>
             </Border>
         </DataTemplate>
     </Window.Resources>
 
     <StackPanel>
-        <ItemsControl ItemsSource="{Binding RegList}" Margin="5,5,5,5" >
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Border BorderBrush="Blue" BorderThickness="2">
-                        <StackPanel Orientation="Horizontal" Margin="2,2,2,2">
-                            <StackPanel Orientation="Horizontal">
-                                <CheckBox x:Name="ItemControlCheckBox" IsChecked="{Binding IsEnabled}"/>
-                                <StackPanel IsEnabled="{Binding IsChecked, ElementName=ItemControlCheckBox}" Orientation="Horizontal">
-                                    <StackPanel>
-                                        <TextBlock Text="{Binding Name}"  TextAlignment="Right" />
-                                        <StackPanel Orientation="Horizontal">
-                                            <Button Command="{Binding  DataContext.ReadRegisterCommand, ElementName=TreeviewContainer}" 
-                                    CommandParameter="{Binding Name}" Content="R" Height="20"/>
-                                            <Button Command="{Binding  DataContext.WriteRegisterCommand, ElementName=TreeviewContainer}" 
-                                    CommandParameter="{Binding Name}" Content="W" Height="20"/>
-                                        </StackPanel>
-                                    </StackPanel>
-                                    <TextBlock Text=" : 0X" />
-                                    <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
-                                Converter={StaticResource NumberToHexString}, ConverterParameter=2}" />
-                                </StackPanel>
-                            </StackPanel>
-                            <ItemsControl ItemsSource="{Binding Items}"/>
-                        </StackPanel>
-                    </Border>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-
-        <!-- https://www.codemag.com/article/1401031/Using-the-WPF-Tree-View-with-Multiple-Levels -->
-        <!--- https://wpf-tutorial.com/treeview-control/treeview-data-binding-multiple-templates/ -->
-        <!-- https://wpf-tutorial.com/be/85/the-treeview-control/treeview-data-binding-and-multiple-templates/ -->
         <GroupBox Header="Tree View" >
+            <!-- https://www.codemag.com/article/1401031/Using-the-WPF-Tree-View-with-Multiple-Levels -->
+            <!--- https://wpf-tutorial.com/treeview-control/treeview-data-binding-multiple-templates/ -->
+            <!-- https://wpf-tutorial.com/be/85/the-treeview-control/treeview-data-binding-and-multiple-templates/ -->
             <TreeView ItemsSource="{Binding RegList}" x:Name="TreeviewContainer">
                 <TreeView.Resources>
                     <!--Register Template -->
-                    <HierarchicalDataTemplate DataType="{x:Type localmodel:RegClass}" ItemsSource="{Binding Items}">
-                        <StackPanel Orientation="Horizontal">
-                            <CheckBox x:Name="TreeViewCheckBox" IsChecked="{Binding IsEnabled}"/>
-                            <StackPanel IsEnabled="{Binding IsChecked, ElementName=TreeViewCheckBox}" Orientation="Horizontal">
-                                <Button Command="{Binding  DataContext.ReadRegisterCommand, ElementName=TreeviewContainer}" 
-                                    CommandParameter="{Binding Name}" Content="R" />
-                                <Button Command="{Binding  DataContext.WriteRegisterCommand, ElementName=TreeviewContainer}" 
-                                    CommandParameter="{Binding Name}" Content="W"/>
-                                <TextBlock Text="{Binding Name}"  TextAlignment="Right" />
-                                <TextBlock Text=" : 0X" />
-                                <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
-                                Converter={StaticResource NumberToHexString}, ConverterParameter=2}" />
-                            </StackPanel>
-                        </StackPanel>
+                    <HierarchicalDataTemplate DataType="{x:Type localmodel:RegClass}" ItemsSource="{Binding Fields}">
+                        <DockPanel DockPanel.Dock="Left">
+                            <CheckBox DockPanel.Dock="Left" x:Name="TreeViewCheckBox" IsChecked="{Binding IsEnabled}"/>
+                            <DockPanel DockPanel.Dock="Left" IsEnabled="{Binding IsChecked, ElementName=TreeViewCheckBox}" >
+                                <!-- R/W Button-->
+                                <UniformGrid DockPanel.Dock="Left" Columns="2">
+                                    <Button Command="{Binding  DataContext.ReadRegisterCommand, ElementName=TreeviewContainer}" 
+                                    CommandParameter="{Binding Name}" Content="R" Foreground="BlueViolet"/>
+                                    <Button Command="{Binding  DataContext.WriteRegisterCommand, ElementName=TreeviewContainer}" 
+                                    CommandParameter="{Binding Name}" Content="W" Foreground="Red"/>
+                                </UniformGrid>
+                                <!-- Address/Name -->
+                                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                                    <TextBlock Text="[" Background="LightBlue"/>
+                                    <TextBlock Text="{Binding Address, Converter={StaticResource NumberToHexString}, ConverterParameter=2}"  TextAlignment="Right"  Background="LightBlue"/>
+                                    <TextBlock Text="]" Background="LightBlue"/>
+                                    <TextBlock Text="{Binding Name}"  Padding="2,2,2,2" Background="Blue" Foreground="White" Width="100"/>
+                                </StackPanel>
+                                <!-- Value -->
+                                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                    <TextBlock DockPanel.Dock="Left" Text=" : 0X" />
+                                    <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
+                                Converter={StaticResource NumberToHexString}, ConverterParameter=2}" Background="Yellow" Foreground="Blue"/>
+                                </StackPanel>
+                            </DockPanel>
+                        </DockPanel>
                     </HierarchicalDataTemplate>
                 </TreeView.Resources>
             </TreeView>
         </GroupBox>
-        <Button Command="{Binding DumpRegsCommand}">Dump</Button>
+        <UniformGrid>
+            <Button Command="{Binding DumpRegsCommand}"  Margin="2,2,2,2">Read</Button>
+            <Button Command="{Binding DumpRegsCommand}"  Margin="2,2,2,2">Write</Button>
+            <Button Command="{Binding DumpRegsCommand}" Margin="2,2,2,2">Dump</Button>
+        </UniformGrid>
         <Border BorderBrush="blue" BorderThickness="2" Height="200" MinWidth="400">
-            <ScrollViewer>
-                <TextBox Text="{Binding ConsoleText}"></TextBox>
+            <ScrollViewer x:Name="Console">
+                <TextBox  Text="{Binding ConsoleText}" TextChanged="Console_TextChanged"></TextBox>
             </ScrollViewer>
         </Border>
     </StackPanel>

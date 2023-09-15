@@ -12,5 +12,10 @@ namespace test_register_wpf
             InitializeComponent();
             DataContext = new ViewModel();
         }
+
+        private void Console_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            Console.ScrollToEnd();
+        }
     }
 }

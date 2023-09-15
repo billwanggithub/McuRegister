@@ -61,6 +61,9 @@ namespace Model
         public bool isEnabled = true;
         partial void OnIsEnabledChanged(bool value)
         {
+            if (Fields is null)
+                return;
+
             foreach (var v in Fields)
             {
                 v.IsEnabled = IsEnabled;
