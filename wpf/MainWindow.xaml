@@ -10,14 +10,17 @@
         <!-- VarClass Template-->
         <DataTemplate DataType="{x:Type localmodel:VarClass}">
             <Border BorderBrush="Orange" BorderThickness="2" Margin="2,2,2,2">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsEnabled}">
-                        <TextBlock Text="{Binding Name}"  Padding="2,2,2,2" Background="LightCyan" Width="100" />
+                <StackPanel IsEnabled="{Binding IsEnabled}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="B[" Background="LightBlue" FontFamily="Consolas" />
+                        <TextBlock Text="{Binding Pos, StringFormat=D2}" Background="LightBlue" FontFamily="Consolas"/>
+                        <TextBlock Text="]" Background="LightBlue" FontFamily="Consolas" />
+                        <TextBlock Text="{Binding Name}"  Padding="2,2,2,2" Background="Magenta" Foreground="White" Width="100" />
                         <TextBlock Text=" 0X" />
                         <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
                                 Converter={StaticResource NumberToHexString}, ConverterParameter=2}" Background="Yellow" Foreground="Blue"/>
                     </StackPanel>
-                    <Slider Value="{Binding Value}" Maximum="{Binding Mask}"></Slider>
+                    <Slider Value="{Binding Value}" Maximum="{Binding Mask}" Foreground="CadetBlue"></Slider>
                 </StackPanel>
             </Border>
         </DataTemplate>
@@ -25,7 +28,10 @@
         <DataTemplate DataType="{x:Type localmodel:FlagClass}">
             <Border BorderBrush="Orange" BorderThickness="2">
                 <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsEnabled}">
-                    <TextBlock Text="{Binding Name}"   Padding="2,2,2,2" Background="LightCyan" Width="100" />
+                    <TextBlock Text="B[" Background="LightBlue" FontFamily="Consolas" />
+                    <TextBlock Text="{Binding Pos, StringFormat=D2}" Background="LightBlue" FontFamily="Consolas"/>
+                    <TextBlock Text="]" Background="LightBlue" FontFamily="Consolas" />
+                    <TextBlock Text="{Binding Name}"   Padding="2,2,2,2" Background="DarkMagenta" Foreground="white" Width="100" />
                     <TextBlock Text=" "  />
                     <CheckBox IsChecked="{Binding Value, Mode=TwoWay, UpdateSourceTrigger =PropertyChanged}"  Background="Yellow" Foreground="Blue"/>
                 </StackPanel>
@@ -33,8 +39,8 @@
         </DataTemplate>
     </Window.Resources>
 
-    <StackPanel>
-        <GroupBox Header="G2198" MaxHeight="400">
+    <DockPanel>
+        <GroupBox DockPanel.Dock="Top" Header="G2198" MaxHeight="400">
             <!-- https://www.codemag.com/article/1401031/Using-the-WPF-Tree-View-with-Multiple-Levels -->
             <!--- https://wpf-tutorial.com/treeview-control/treeview-data-binding-multiple-templates/ -->
             <!-- https://wpf-tutorial.com/be/85/the-treeview-control/treeview-data-binding-and-multiple-templates/ -->
@@ -55,10 +61,11 @@
                                     </UniformGrid>
                                     <!-- Address/Name -->
                                     <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-                                        <TextBlock Text="[" Background="LightBlue"/>
-                                        <TextBlock Text="{Binding Address, Converter={StaticResource NumberToHexString}, ConverterParameter=2}"  TextAlignment="Right"  Background="LightBlue"/>
-                                        <TextBlock Text="]" Background="LightBlue"/>
-                                        <TextBlock Text="{Binding Name}"  Padding="2,2,2,2" Background="Blue" Foreground="White" Width="100"/>
+                                        <TextBlock Text="[" Background="LightBlue" FontFamily="Consolas" />
+                                        <TextBlock Text="{Binding Address, Converter={StaticResource NumberToHexString}, ConverterParameter=2}"  
+                                                   FontFamily="Consolas" TextAlignment="Right"  Background="LightBlue"/>
+                                        <TextBlock Text="]" Background="LightBlue" FontFamily="Consolas" />
+                                        <TextBlock Text="{Binding Name}"  Padding="2,2,2,2" Background="Blue" Foreground="White" Width="100" FontFamily="Consolas" />
                                     </StackPanel>
                                     <!-- Value -->
                                     <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
@@ -67,26 +74,26 @@
                                 Converter={StaticResource NumberToHexString}, ConverterParameter=2}" Background="Yellow" Foreground="Blue"/>
                                         <TextBox Text="{Binding Value, StringFormat=D3 }" Background="White" Foreground="Blue"></TextBox>
                                     </StackPanel>
+                                    <!-- Slider Bar -->
+                                    <Slider DockPanel.Dock="Right" Value="{Binding Value}" Maximum="{Binding Mask}" Width="100" Foreground="Maroon" ></Slider>
                                 </DockPanel>
-                                <!-- Slider Bar -->
-                                <Slider DockPanel.Dock="Right" Value="{Binding Value}" Maximum="{Binding Mask}" Width="100"></Slider>
                             </DockPanel>
                         </HierarchicalDataTemplate>
                     </TreeView.Resources>
                 </TreeView>
             </ScrollViewer>
         </GroupBox>
-        <UniformGrid>
+        <UniformGrid DockPanel.Dock="Top" Columns="2">
             <Button Command="{Binding DumpRegsCommand}"  Margin="2,2,2,2">Read Regs</Button>
             <Button Command="{Binding WriteRegsCommand}"  Margin="2,2,2,2">Write Regs</Button>
             <Button Command="{Binding ReadJsonCommand}"  Margin="2,2,2,2">Read Json</Button>
             <Button Command="{Binding WriteJsonCommand}"  Margin="2,2,2,2">Write Json</Button>
             <Button Command="{Binding AddRegCommand}"  Margin="2,2,2,2">Add Reg</Button>
         </UniformGrid>
-        <Border BorderBrush="blue" BorderThickness="2" Height="200" MinWidth="400">
+        <Border BorderBrush="blue" BorderThickness="2" MinWidth="400">
             <ScrollViewer x:Name="Console">
                 <TextBox  Text="{Binding ConsoleText}" TextChanged="Console_TextChanged"></TextBox>
             </ScrollViewer>
         </Border>
-    </StackPanel>
+    </DockPanel>
 </Window>

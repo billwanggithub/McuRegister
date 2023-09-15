@@ -125,6 +125,15 @@ public partial class ViewModel : ObservableObject
         {
             RegList.Add(new()
             {
+                SubFields = new()
+            {
+                new VarClass() {Name= "VPOS1[9:8]", Mask = 0x03, Pos = 0} ,
+                new FlagClass(){Name= "FREQ_VP1", Pos = 2} ,
+                new FlagClass(){Name= "MODE_VP1", Pos = 3} ,
+                new VarClass() {Name= "FIXED[1:0]", Mask = 0x03, Pos = 4} ,
+                new FlagClass(){Name= "TRACK1", Pos = 6} ,
+                new FlagClass(){Name= "DIS", Pos = 7} ,
+            },
                 Address = (uint)i + 6,
                 Name = $"Reg{i}",
                 Mask = 0xFF,
