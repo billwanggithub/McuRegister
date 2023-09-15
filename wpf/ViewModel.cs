@@ -1,7 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Win32;
 using Model;
+using Newtonsoft.Json;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 
 public partial class ViewModel : ObservableObject
@@ -24,7 +27,7 @@ public partial class ViewModel : ObservableObject
         {
             //DebugPrint = DebugPrint,
             Name = "reg0",
-            Fields = new()
+            SubFields = new()
             {
                 new FlagClass(){Name= "a", Pos = 0} ,
                 new VarClass() {Name= "var0", Mask = 0x03, Pos = 1, Value = 0} ,
@@ -33,7 +36,7 @@ public partial class ViewModel : ObservableObject
                 new FlagClass() {Name= "c", Pos = 7},
             },
             Value = 0xFF
-            //Fields = new()
+            //SubFields = new()
             //{
             //    new FlagClass(){Name= "a", Pos = 0, Value = true} ,
             //    new VarClass() {Name= "var0", Mask = 0x03, Pos = 1, Value = 0xFF} ,
@@ -47,7 +50,7 @@ public partial class ViewModel : ObservableObject
         {
             DebugPrint = DebugPrint,
             Name = "reg1",
-            Fields = new()
+            SubFields = new()
             {
                 new VarClass() {Name= "var2", Mask = 0x03, Pos = 1, Value = 0x00 } ,
                 new VarClass() {Name= "var3", Mask = 0x07, Pos = 4, Value = 0x00 },
@@ -77,7 +80,7 @@ public partial class ViewModel : ObservableObject
         {
             Address = 1,
             Name = "VPOS1 Control",
-            Fields = new()
+            SubFields = new()
             {
                 new VarClass() {Name= "VPOS1[9:8]", Mask = 0x03, Pos = 0} ,
                 new FlagClass(){Name= "FREQ_VP1", Pos = 2} ,
@@ -100,7 +103,7 @@ public partial class ViewModel : ObservableObject
         {
             Address = 3,
             Name = "VNEG1 Control",
-            Fields = new()
+            SubFields = new()
             {
                 new VarClass() {Name= "VNEG1[9:8]", Mask = 0x03, Pos = 0} ,
                 new FlagClass(){Name= "FREQ_VN1", Pos = 2} ,
@@ -137,18 +140,33 @@ public partial class ViewModel : ObservableObject
         string? regString = DumpRegister(reg!);
         ConsoleText += regString;
     }
+    [RelayCommand]
+    void WriteJson(object? parameter)
+    {
+        SaveToJson(RegList);
+    }
+    [RelayCommand]
+    void ReadJson(object? parameter)
+    {
+        ReadFromJson();
+    }
+    [RelayCommand]
+    void AddReg(object? parameter)
+    {
+        RegList.Add(new());
+    }
     string? DumpRegister(RegClass reg)
     {
         string regString = "";
         if (reg == null) return null;
         regString += $"[{reg.Address:X2}]{reg.Name} : 0X{reg.Value:X2}\n";
 
-        if (reg.Fields is null)
+        if (reg.SubFields is null)
             return regString + "\n";
 
         string varString = "";
         string flagString = "";
-        foreach (var item in reg.Fields)
+        foreach (var item in reg.SubFields)
         {
             if (item.GetType() == typeof(VarClass))
             {
@@ -163,7 +181,6 @@ public partial class ViewModel : ObservableObject
         return regString;
     }
 
-
     public RegClass? GetReg(string name)
     {
         return RegList.Where(x => x.Name == name).Select(x => x).FirstOrDefault();
@@ -172,5 +189,42 @@ public partial class ViewModel : ObservableObject
     void DebugPrint(string message)
     {
         ConsoleText += message;
+    }
+
+    void SaveToJson(ObservableCollection<RegClass> regs)
+    {
+        string json = JsonConvert.SerializeObject(regs, Formatting.Indented);
+        SaveFileDialog saveFileDialog = new()
+        {
+            RestoreDirectory = true,
+            Title = "Save Setting",
+            DefaultExt = "json",
+            Filter = "json files (*.json)|*.json|All files (*.*)|*.*"
+        };
+        saveFileDialog.ShowDialog();
+        string fileName = saveFileDialog.FileName;
+        if (fileName == "")
+            return;
+        File.WriteAllText(fileName, json);
+    }
+    void ReadFromJson()
+    {
+        OpenFileDialog openFileDialog = new()
+        {
+            RestoreDirectory = true,
+            Title = "Load Setting",
+            DefaultExt = "json",
+            Filter = "json files (*.json)|*.json|All files (*.*)|*.*",
+            CheckFileExists = true,
+            CheckPathExists = true,
+            Multiselect = true
+        };
+        //openFileDialog.Reset();
+        openFileDialog.ShowDialog();
+        if (openFileDialog.FileName == "")
+            return;
+        string fn = openFileDialog.FileName;
+        string json = File.ReadAllText(fn);
+        RegList = JsonConvert.DeserializeObject<ObservableCollection<RegClass>>(json)!;
     }
 }

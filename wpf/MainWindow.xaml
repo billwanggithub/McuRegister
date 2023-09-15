@@ -41,7 +41,7 @@
             <TreeView ItemsSource="{Binding RegList}" x:Name="TreeviewContainer">
                 <TreeView.Resources>
                     <!--Register Template -->
-                    <HierarchicalDataTemplate DataType="{x:Type localmodel:RegClass}" ItemsSource="{Binding Fields}">
+                    <HierarchicalDataTemplate DataType="{x:Type localmodel:RegClass}" ItemsSource="{Binding SubFields}">
                         <DockPanel>
                             <CheckBox DockPanel.Dock="Left" x:Name="TreeViewCheckBox" IsChecked="{Binding IsEnabled}"/>
                             <DockPanel DockPanel.Dock="Left" IsEnabled="{Binding IsChecked, ElementName=TreeViewCheckBox}" >
@@ -75,9 +75,11 @@
             </TreeView>
         </GroupBox>
         <UniformGrid>
-            <Button Command="{Binding DumpRegsCommand}"  Margin="2,2,2,2">Read</Button>
-            <Button Command="{Binding DumpRegsCommand}"  Margin="2,2,2,2">Write</Button>
-            <Button Command="{Binding DumpRegsCommand}" Margin="2,2,2,2">Dump</Button>
+            <Button Command="{Binding DumpRegsCommand}"  Margin="2,2,2,2">Read Regs</Button>
+            <Button Command="{Binding WriteRegsCommand}"  Margin="2,2,2,2">Write Regs</Button>
+            <Button Command="{Binding ReadJsonCommand}"  Margin="2,2,2,2">Read Json</Button>
+            <Button Command="{Binding WriteJsonCommand}"  Margin="2,2,2,2">Write Json</Button>
+            <Button Command="{Binding AddRegCommand}"  Margin="2,2,2,2">Add Reg</Button>
         </UniformGrid>
         <Border BorderBrush="blue" BorderThickness="2" Height="200" MinWidth="400">
             <ScrollViewer x:Name="Console">
