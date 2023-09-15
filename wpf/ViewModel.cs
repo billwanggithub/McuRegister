@@ -193,7 +193,11 @@ public partial class ViewModel : ObservableObject
 
     void SaveToJson(ObservableCollection<RegClass> regs)
     {
-        string json = JsonConvert.SerializeObject(regs, Formatting.Indented);
+        var jsonSerializerSettings = new JsonSerializerSettings()
+        {
+            Formatting = Formatting.Indented,
+        };
+        string json = JsonConvert.SerializeObject(regs, jsonSerializerSettings);
         SaveFileDialog saveFileDialog = new()
         {
             RestoreDirectory = true,
@@ -219,12 +223,12 @@ public partial class ViewModel : ObservableObject
             CheckPathExists = true,
             Multiselect = true
         };
-        //openFileDialog.Reset();
         openFileDialog.ShowDialog();
         if (openFileDialog.FileName == "")
             return;
         string fn = openFileDialog.FileName;
         string json = File.ReadAllText(fn);
+        RegList = new();
         RegList = JsonConvert.DeserializeObject<ObservableCollection<RegClass>>(json)!;
     }
 }
