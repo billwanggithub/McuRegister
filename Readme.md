@@ -45,3 +45,37 @@ RegList.Add(new()
 
 </Window>
 ``` 
+
+- Add Dictionary File `ConvertersDictionary.xaml` for Value Converter
+
+```
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:converters="clr-namespace:Converters;assembly=Converters"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <converters:NumberToHexString x:Key="NumberToHexString"/>
+    <converters:ItemToVisibilityConverter x:Key="ItemToVisibilityConverter"/>
+    <converters:ItemToBoolConverter x:Key="ItemToBoolConverter"/>
+</ResourceDictionary>
+```
+
+- Add dictionary to App.xaml
+
+```
+<Application x:Class="test_register_wpf.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:test_register_wpf"                     
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->
+                <!-- My Dictionaries -->
+                <!-- https://yuchungchuang.wordpress.com/2019/05/01/wpf-resources/ -->
+                <ResourceDictionary Source="Dictionary/ConvertersDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
+
+```
