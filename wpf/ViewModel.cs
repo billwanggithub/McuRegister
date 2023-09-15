@@ -153,6 +153,7 @@ public partial class ViewModel : ObservableObject
     [RelayCommand]
     void AddReg(object? parameter)
     {
+        //TODO: popup a window to edit
         RegList.Add(new());
     }
     string? DumpRegister(RegClass reg)
