@@ -70,6 +70,7 @@ public partial class ViewModel : ObservableObject
         {
             Address = 0,
             Name = "TMST_VALUE",
+            Mask = 0xFF,
             Value = 0x00,
         });
         RegList.Add(new()
@@ -85,12 +86,14 @@ public partial class ViewModel : ObservableObject
                 new FlagClass(){Name= "TRACK1", Pos = 6} ,
                 new FlagClass(){Name= "DIS", Pos = 7} ,
             },
+            Mask = 0xFF,
             Value = 0x07,
         });
         RegList.Add(new()
         {
             Address = 2,
             Name = "VPOS1[7:0]",
+            Mask = 0xFF,
             Value = 0x20,
         });
         RegList.Add(new()
@@ -105,12 +108,14 @@ public partial class ViewModel : ObservableObject
                 new VarClass() {Name= "Reserved", Mask = 0x07, Pos = 4} ,
                 new FlagClass(){Name= "DIS", Pos = 7} ,
             },
+            Mask = 0xFF,
             Value = 0x07,
         });
         RegList.Add(new()
         {
             Address = 4,
             Name = "VNEG1[7:0]",
+            Mask = 0xFF,
             Value = 0x20,
         });
     }

@@ -13,6 +13,8 @@ namespace Model
         [ObservableProperty]
         public uint value = 0;
         [ObservableProperty]
+        public uint mask = 0xFFFFFFFF;
+        [ObservableProperty]
         public ObservableCollection<dynamic>? fields;
         partial void OnFieldsChanged(ObservableCollection<dynamic>? value)
         {
