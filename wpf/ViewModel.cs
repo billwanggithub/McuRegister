@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 public partial class ViewModel : ObservableObject
 {
@@ -121,7 +122,7 @@ public partial class ViewModel : ObservableObject
             Mask = 0xFF,
             Value = 0x20,
         });
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 100; i++)
         {
             RegList.Add(new()
             {
@@ -142,13 +143,17 @@ public partial class ViewModel : ObservableObject
         }
     }
     [RelayCommand]
-    void DumpRegs(object? parameter)
+    async Task DumpRegs(object? parameter)
     {
-        foreach (var reg in RegList)
+        await Task.Run(() =>
         {
-            string? regString = DumpRegister(reg);
-            ConsoleText += regString ?? "";
-        }
+            foreach (RegClass reg in RegList)
+            {
+                string? regString = reg.Dump();
+                ConsoleText += regString ?? "";
+            }
+        });
+
     }
     [RelayCommand]
     void ReadRegister(object? parameter)
@@ -156,7 +161,7 @@ public partial class ViewModel : ObservableObject
         if (parameter == null)
             return;
         RegClass? reg = GetReg((string)parameter);
-        string? regString = DumpRegister(reg!);
+        string? regString = reg!.Dump();
         ConsoleText += regString;
     }
     [RelayCommand]
@@ -174,31 +179,6 @@ public partial class ViewModel : ObservableObject
     {
         //TODO: popup a window to edit
         RegList.Add(new());
-    }
-    string? DumpRegister(RegClass reg)
-    {
-        string regString = "";
-        if (reg == null) return null;
-        regString += $"[{reg.Address:X2}]{reg.Name} : 0X{reg.Value:X2}\n";
-
-        if (reg.SubFields is null)
-            return regString + "\n";
-
-        string varString = "";
-        string flagString = "";
-        foreach (var item in reg.SubFields)
-        {
-            if (item.GetType() == typeof(VarClass))
-            {
-                varString += $"{((VarClass)item).Name} : 0X{((VarClass)item).Value:X2}\n";
-            }
-            if (item.GetType() == typeof(FlagClass))
-            {
-                flagString += $"{((FlagClass)item).Name} : {((FlagClass)item).Value}\n";
-            }
-        }
-        regString += $"{varString}{flagString}\n";
-        return regString;
     }
 
     public RegClass? GetReg(string name)
