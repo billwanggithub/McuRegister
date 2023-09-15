@@ -5,6 +5,8 @@
 ## Usage
 
 - Add Project Reference to Converters
+- Add Register Database
+
 ```
 RegList.Add(new()
 {
@@ -21,3 +23,13 @@ RegList.Add(new()
     Value = 0xFF
 });
 ```
+
+- Assign register list to ItemsSource in ViewModel
+```
+<TreeView ItemsSource="{Binding RegList}" x:Name="TreeviewContainer">
+```
+
+- Add the following to Xaml
+```
+<uc:McuRegUserControl></uc:McuRegUserControl>
+``` 
