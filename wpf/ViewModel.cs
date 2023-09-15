@@ -14,6 +14,11 @@ public partial class ViewModel : ObservableObject
     string consoleText = "";
 
     [ObservableProperty]
+    int progressBarValue = 50;
+    [ObservableProperty]
+    int progressBarMax = 100;
+
+    [ObservableProperty]
     public List<RegClass> regList = new();
 
     public ViewModel()
@@ -122,7 +127,7 @@ public partial class ViewModel : ObservableObject
             Mask = 0xFF,
             Value = 0x20,
         });
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 20; i++)
         {
             RegList.Add(new()
             {
@@ -145,12 +150,15 @@ public partial class ViewModel : ObservableObject
     [RelayCommand]
     async Task DumpRegs(object? parameter)
     {
-        await Task.Run(() =>
+        await Task.Run(async () =>
         {
+            ProgressBarValue = 0;
+            ProgressBarMax = RegList.Count - 1;
             foreach (RegClass reg in RegList)
             {
                 string? regString = reg.Dump();
                 ConsoleText += regString ?? "";
+                ProgressBarValue++;
             }
         });
 

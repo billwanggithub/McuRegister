@@ -22,6 +22,8 @@
             <Button Command="{Binding WriteJsonCommand}"  Margin="2,2,2,2">Write Json</Button>
             <Button Command="{Binding AddRegCommand}"  Margin="2,2,2,2">Add Reg</Button>
         </UniformGrid>
+        <ProgressBar DockPanel.Dock="Top" Value="{Binding ProgressBarValue}" Maximum="{Binding ProgressBarMax}"
+                     Height="10" Margin="5,5,5,5"/>
         <Border BorderBrush="blue" BorderThickness="2">
             <ScrollViewer x:Name="Console">
                 <TextBox  Text="{Binding ConsoleText}" TextChanged="Console_TextChanged"  FontFamily="Consolas" ></TextBox>
