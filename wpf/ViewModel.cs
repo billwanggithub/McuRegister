@@ -75,7 +75,7 @@ public partial class ViewModel : ObservableObject
         RegList.Add(new()
         {
             Address = 1,
-            Name = "VPOS1_Control",
+            Name = "VPOS1 Control",
             Fields = new()
             {
                 new VarClass() {Name= "VPOS1[9:8]", Mask = 0x03, Pos = 0} ,
@@ -91,6 +91,26 @@ public partial class ViewModel : ObservableObject
         {
             Address = 2,
             Name = "VPOS1[7:0]",
+            Value = 0x20,
+        });
+        RegList.Add(new()
+        {
+            Address = 3,
+            Name = "VNEG1 Control",
+            Fields = new()
+            {
+                new VarClass() {Name= "VNEG1[9:8]", Mask = 0x03, Pos = 0} ,
+                new FlagClass(){Name= "FREQ_VN1", Pos = 2} ,
+                new FlagClass(){Name= "MODE_VN1", Pos = 3} ,
+                new VarClass() {Name= "Reserved", Mask = 0x07, Pos = 4} ,
+                new FlagClass(){Name= "DIS", Pos = 7} ,
+            },
+            Value = 0x07,
+        });
+        RegList.Add(new()
+        {
+            Address = 4,
+            Name = "VNEG1[7:0]",
             Value = 0x20,
         });
     }

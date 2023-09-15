@@ -10,11 +10,14 @@
         <!-- VarClass Template-->
         <DataTemplate DataType="{x:Type localmodel:VarClass}">
             <Border BorderBrush="Orange" BorderThickness="2" Margin="2,2,2,2">
-                <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsEnabled}">
-                    <TextBlock Text="{Binding Name}"  Padding="2,2,2,2" Background="LightCyan" Width="100" />
-                    <TextBlock Text=" 0X" />
-                    <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsEnabled}">
+                        <TextBlock Text="{Binding Name}"  Padding="2,2,2,2" Background="LightCyan" Width="100" />
+                        <TextBlock Text=" 0X" />
+                        <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
                                 Converter={StaticResource NumberToHexString}, ConverterParameter=2}" Background="Yellow" Foreground="Blue"/>
+                    </StackPanel>
+                    <Slider Value="{Binding Value}" Maximum="{Binding Mask}"></Slider>
                 </StackPanel>
             </Border>
         </DataTemplate>
@@ -31,7 +34,7 @@
     </Window.Resources>
 
     <StackPanel>
-        <GroupBox Header="Tree View" >
+        <GroupBox Header="G2198" >
             <!-- https://www.codemag.com/article/1401031/Using-the-WPF-Tree-View-with-Multiple-Levels -->
             <!--- https://wpf-tutorial.com/treeview-control/treeview-data-binding-multiple-templates/ -->
             <!-- https://wpf-tutorial.com/be/85/the-treeview-control/treeview-data-binding-and-multiple-templates/ -->
@@ -39,7 +42,7 @@
                 <TreeView.Resources>
                     <!--Register Template -->
                     <HierarchicalDataTemplate DataType="{x:Type localmodel:RegClass}" ItemsSource="{Binding Fields}">
-                        <DockPanel DockPanel.Dock="Left">
+                        <DockPanel>
                             <CheckBox DockPanel.Dock="Left" x:Name="TreeViewCheckBox" IsChecked="{Binding IsEnabled}"/>
                             <DockPanel DockPanel.Dock="Left" IsEnabled="{Binding IsChecked, ElementName=TreeViewCheckBox}" >
                                 <!-- R/W Button-->
@@ -57,12 +60,15 @@
                                     <TextBlock Text="{Binding Name}"  Padding="2,2,2,2" Background="Blue" Foreground="White" Width="100"/>
                                 </StackPanel>
                                 <!-- Value -->
-                                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
                                     <TextBlock DockPanel.Dock="Left" Text=" : 0X" />
                                     <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
                                 Converter={StaticResource NumberToHexString}, ConverterParameter=2}" Background="Yellow" Foreground="Blue"/>
+                                    <TextBox Text="{Binding Value, StringFormat=D3 }" Background="White" Foreground="Blue"></TextBox>
                                 </StackPanel>
                             </DockPanel>
+                            <!-- Slider Bar -->
+                            <Slider DockPanel.Dock="Right" Value="{Binding Value}" Maximum="{Binding Mask}" Width="100"></Slider>
                         </DockPanel>
                     </HierarchicalDataTemplate>
                 </TreeView.Resources>
