@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace Model
 {
@@ -26,11 +26,12 @@ namespace Model
                 Type type = v.GetType();
                 if (type == typeof(VarClass))
                 {
-                    v.Value = (value >> v.Pos) & v.Mask; // Set Variables
+                    ((VarClass)v).Value = (value >> ((VarClass)v).Pos) & ((VarClass)v).Mask; // Set Variables
                 }
                 else if (type == typeof(FlagClass)) // Set Flags
                 {
-                    v.Value = (value & ((uint)1 << v.Pos)) == ((uint)1 << v.Pos);
+                    bool v1 = (value & ((uint)1 << ((FlagClass)v).Pos)) == ((uint)1 << (((FlagClass)v).Pos));
+                    ((FlagClass)v).Value = v1;
                 }
             }
 
@@ -42,13 +43,13 @@ namespace Model
         public uint mask = 0xFFFFFFFF;
         [JsonIgnore]
         [ObservableProperty]
-        public ObservableCollection<dynamic>? subFields;
-        partial void OnSubFieldsChanged(ObservableCollection<dynamic>? value)
+        public List<object>? subFields;
+        partial void OnSubFieldsChanged(List<object>? value)
         {
             if (value is null)
                 return;
 
-            foreach (dynamic item in value)
+            foreach (object item in value)
             {
                 Type type = item.GetType();
                 if (type == typeof(VarClass))
@@ -73,12 +74,20 @@ namespace Model
             if (SubFields is null)
                 return;
 
-            foreach (var v in SubFields)
+            foreach (var item in SubFields)
             {
-                v.IsEnabled = IsEnabled;
+                Type type = item.GetType();
+                if (type == typeof(VarClass))
+                {
+                    ((VarClass)item).IsEnabled = IsEnabled;
+                }
+                else if (type == typeof(FlagClass))
+                {
+                    ((FlagClass)item).IsEnabled = IsEnabled;
+                }
             }
         }
-        public void PropertyValueChanged(object obj, dynamic value)
+        public void PropertyValueChanged(object obj, object value)
         {
             GetValue();
             //if (DebugPrint is not null)
@@ -94,15 +103,16 @@ namespace Model
 
             uint varTemp = 0;
             uint flagTemp = 0;
-            foreach (var v in SubFields)
+            foreach (var item in SubFields)
             {
-                if (v.GetType() == typeof(VarClass))
+                Type type = item.GetType();
+                if (type == typeof(VarClass))
                 {
-                    varTemp |= (v.Value & v.Mask) << v.Pos; // OR all Variable
+                    varTemp |= (((VarClass)item).Value & ((VarClass)item).Mask) << ((VarClass)item).Pos; // OR all Variable
                 }
-                else if (v.GetType() == typeof(FlagClass)) // OR all Flags
+                else if (type == typeof(FlagClass))
                 {
-                    flagTemp |= (v.Value) ? (uint)1 << v.Pos : 0;
+                    flagTemp |= (((FlagClass)item).Value) ? (uint)1 << ((FlagClass)item).Pos : 0;
                 }
             }
             return Value = varTemp | flagTemp;

@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using Model;
 using Newtonsoft.Json;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -13,7 +13,7 @@ public partial class ViewModel : ObservableObject
     string consoleText = "";
 
     [ObservableProperty]
-    public ObservableCollection<RegClass> regList = new();
+    public List<RegClass> regList = new();
 
     public ViewModel()
     {
@@ -170,11 +170,11 @@ public partial class ViewModel : ObservableObject
         {
             if (item.GetType() == typeof(VarClass))
             {
-                varString += $"{item.Name} : 0X{item.Value:X2}\n";
+                varString += $"{((VarClass)item).Name} : 0X{((VarClass)item).Value:X2}\n";
             }
             if (item.GetType() == typeof(FlagClass))
             {
-                flagString += $"{item.Name} : {item.Value}\n";
+                flagString += $"{((FlagClass)item).Name} : {((FlagClass)item).Value}\n";
             }
         }
         regString += $"{varString}{flagString}\n";
@@ -191,10 +191,11 @@ public partial class ViewModel : ObservableObject
         ConsoleText += message;
     }
 
-    void SaveToJson(ObservableCollection<RegClass> regs)
+    void SaveToJson(List<RegClass> regs)
     {
         var jsonSerializerSettings = new JsonSerializerSettings()
         {
+            TypeNameHandling = TypeNameHandling.All,
             Formatting = Formatting.Indented,
         };
         string json = JsonConvert.SerializeObject(regs, jsonSerializerSettings);
@@ -229,6 +230,12 @@ public partial class ViewModel : ObservableObject
         string fn = openFileDialog.FileName;
         string json = File.ReadAllText(fn);
         RegList = new();
-        RegList = JsonConvert.DeserializeObject<ObservableCollection<RegClass>>(json)!;
+
+        var jsonSerializerSettings = new JsonSerializerSettings()
+        {
+            TypeNameHandling = TypeNameHandling.All,
+            Formatting = Formatting.Indented,
+        };
+        RegList = JsonConvert.DeserializeObject<List<RegClass>>(json, jsonSerializerSettings)!;
     }
 }
