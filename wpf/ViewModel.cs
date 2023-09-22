@@ -159,9 +159,9 @@ public partial class ViewModel : ObservableObject
                 string? regString = reg.Dump();
                 ConsoleText += regString ?? "";
                 ProgressBarValue++;
+                await Task.Delay(1);
             }
         });
-
     }
     [RelayCommand]
     void ReadRegister(object? parameter)

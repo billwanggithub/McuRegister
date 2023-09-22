@@ -8,6 +8,30 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
+        <!-- Button Style-->
+        <Style TargetType="Button">
+            <Setter Property="FontFamily" Value="Consolas" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Width" Value="20" />
+            <Setter Property="Margin" Value="2,2,2,2" />
+            <Style.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="2"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Consolas" />
+            <Setter Property="Margin" Value="2,2,2,2" />
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="FontFamily" Value="Consolas" />
+            <Setter Property="Margin" Value="2,2,2,2" />
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
         <!-- VarClass Template-->
         <DataTemplate DataType="{x:Type localmodel:VarClass}">
             <Border BorderBrush="Orange" BorderThickness="2" Margin="2,2,2,2">
@@ -67,13 +91,13 @@
                             </StackPanel>
                             <!-- Value -->
                             <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-                                <TextBlock DockPanel.Dock="Left" Text=" : 0X" />
+                                <TextBlock DockPanel.Dock="Left" Text=" : 0X"/>
                                 <TextBox Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
-                                Converter={StaticResource NumberToHexString}, ConverterParameter=2}" Background="Yellow" Foreground="Blue"/>
+                                Converter={StaticResource NumberToHexString}, ConverterParameter=2}" Background="Yellow" Foreground="Blue" />
                                 <TextBox Text="{Binding Value, StringFormat=D3 }" Background="White" Foreground="Blue"></TextBox>
                             </StackPanel>
                             <!-- Slider Bar -->
-                            <Slider DockPanel.Dock="Right" Value="{Binding Value}" Maximum="{Binding Mask}" Width="100" Foreground="Maroon" ></Slider>
+                            <Slider DockPanel.Dock="Right" Value="{Binding Value}" Maximum="{Binding Mask}" Width="100" Foreground="Red"></Slider>
                         </DockPanel>
                     </DockPanel>
                 </HierarchicalDataTemplate>
