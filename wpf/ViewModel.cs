@@ -24,7 +24,8 @@ public partial class ViewModel : ObservableObject
     public ViewModel()
     {
         //Init_Registers();
-        Init_G2198();
+        //Init_G2198();
+        Init_G8501();
     }
 
     void Init_Registers()
@@ -146,6 +147,129 @@ public partial class ViewModel : ObservableObject
                 Value = 0x20,
             });
         }
+    }
+
+    void Init_G8501()
+    {
+        RegList.Add(new()
+        {
+            Address = 0x80,
+            Name = "OCCTL",
+            SubFields = new()
+            {
+                new FlagClass() {Name= "TestEn", Pos = 0} ,
+                new FlagClass(){Name= "pwmWx2", Pos = 1} ,
+                new FlagClass(){Name= "NA", Pos = 2} ,
+                new FlagClass(){Name= "ADCint", Pos = 3} ,
+                new VarClass() {Name= "OCgain", Mask = 0x0F, Pos = 4} ,
+            },
+            Mask = 0xFF,
+            Value = 0x00,
+        });
+        RegList.Add(new()
+        {
+            Address = 0x91,
+            Name = "ADCCTL",
+            SubFields = new()
+            {
+                new FlagClass() {Name= "aSign", Pos = 0} ,
+                new FlagClass(){Name= "CLIMEN", Pos = 1} ,
+                new FlagClass(){Name= "CONVEN", Pos = 2} ,
+                new VarClass(){Name= "adCS0", Mask=0X07, Pos = 3} ,
+                new FlagClass(){Name= "ADCEN", Pos = 6} ,
+                new FlagClass(){Name= "ADCDIV", Pos = 7} ,
+            },
+            Mask = 0xFF,
+            Value = 0x00,
+        });
+        RegList.Add(new()
+        {
+            Address = 0xA8,
+            Name = "IE",
+            SubFields = new()
+            {
+                new FlagClass() {Name= "EX0", Pos = 0} ,
+                new FlagClass(){Name= "ET0", Pos = 1} ,
+                new FlagClass(){Name= "EX1", Pos = 2} ,
+                new FlagClass(){Name= "ET1", Pos = 3} ,
+                new FlagClass(){Name= "ES0", Pos = 4} ,
+                new FlagClass(){Name= "ET2", Pos = 5} ,
+                new FlagClass(){Name= "EADC", Pos = 6} ,
+                new FlagClass(){Name= "EA", Pos = 7} ,
+            },
+            Mask = 0xFF,
+            Value = 0x00,
+        });
+        RegList.Add(new()
+        {
+            Address = 0x98,
+            Name = "SCON",
+            SubFields = new()
+            {
+                new FlagClass() {Name= "RI", Pos = 0} ,
+                new FlagClass(){Name= "TI", Pos = 1} ,
+                new FlagClass(){Name= "RB8", Pos = 2} ,
+                new FlagClass(){Name= "TB8", Pos = 3} ,
+                new FlagClass(){Name= "REN", Pos = 4} ,
+                new FlagClass(){Name= "SM2", Pos = 5} ,
+                new FlagClass(){Name= "SM1", Pos = 6} ,
+                new FlagClass(){Name= "SM0/FE", Pos = 7} ,
+            },
+            Mask = 0xFF,
+            Value = 0x00,
+        });
+        RegList.Add(new()
+        {
+            Address = 0x99,
+            Name = "SBUF",
+            Mask = 0xFF,
+            Value = 0x00,
+        });
+        RegList.Add(new()
+        {
+            Address = 0x9C,
+            Name = "INVXiL",
+            Mask = 0xFF,
+            Value = 0x00,
+        });
+        RegList.Add(new()
+        {
+            Address = 0x9D,
+            Name = "INVXiH",
+            Mask = 0xFF,
+            Value = 0x00,
+        });
+        RegList.Add(new()
+        {
+            Address = 0x9E,
+            Name = "INVXoL",
+            Mask = 0xFF,
+            Value = 0x00,
+        });
+        RegList.Add(new()
+        {
+            Address = 0x9F,
+            Name = "INVXoH",
+            Mask = 0xFF,
+            Value = 0x00,
+        });
+        RegList.Add(new()
+        {
+            Address = 0xA1,
+            Name = "icmCTL",
+            SubFields = new()
+            {
+                new FlagClass() {Name= "icmEn", Pos = 0} ,
+                new FlagClass(){Name= "icmRW", Pos = 1} ,
+                new VarClass(){Name= "icmDNo", Mask = 0x03, Pos = 2} ,
+                new FlagClass(){Name= "icmNak", Pos = 4} ,
+                new FlagClass(){Name= "icmInt", Pos = 5} ,
+                new FlagClass(){Name= "NA", Pos = 6} ,
+                new FlagClass(){Name= "icmWP", Pos = 7} ,
+            },
+            Mask = 0xFF,
+            Value = 0x00,
+        });
     }
     [RelayCommand]
     async Task DumpRegs(object? parameter)
